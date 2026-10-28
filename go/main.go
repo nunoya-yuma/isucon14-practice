@@ -7,10 +7,12 @@ import (
 	"log/slog"
 	"net"
 	"net/http"
+	_ "net/http/pprof"
 	"os"
 	"os/exec"
 	"strconv"
 
+	"github.com/felixge/fgprof"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-sql-driver/mysql"
@@ -20,6 +22,10 @@ import (
 var db *sqlx.DB
 
 func main() {
+	// Profilers for profile.sh; localhost only, and the app uses its own mux so /debug/ is not exposed
+	http.DefaultServeMux.Handle("/debug/fgprof", fgprof.Handler())
+	go func() { slog.Info("pprof", "err", http.ListenAndServe("localhost:6060", nil)) }()
+
 	mux := setup()
 	slog.Info("Listening on :8080")
 	http.ListenAndServe(":8080", mux)
