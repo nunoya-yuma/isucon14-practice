@@ -49,7 +49,7 @@ if has_changed /etc/systemd/; then
   for f in "${changed[@]}"; do
     if [[ $f == /etc/systemd/system/*.service && $f != */$APP_SERVICE.service ]]; then
       echo "==> restarting $(basename "$f")"
-      sudo systemctl restart "$(basename "$f")"
+      sudo systemctl try-restart "$(basename "$f")"   # leave intentionally stopped services stopped
     fi
   done
 fi
