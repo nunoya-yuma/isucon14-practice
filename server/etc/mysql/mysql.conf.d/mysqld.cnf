@@ -65,7 +65,7 @@ log_error = /var/log/mysql/error.log
 #
 # Here you can see queries with especially long duration
 # Log every query for pt-query-digest; disable before the final benchmark
-slow_query_log		= 1
+slow_query_log		= 0   # off for the final benchmark; 1 to analyze with pt-query-digest
 slow_query_log_file	= /var/log/mysql/mysql-slow.log
 long_query_time = 0
 # log-queries-not-using-indexes

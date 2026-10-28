@@ -22,9 +22,12 @@ import (
 var db *sqlx.DB
 
 func main() {
-	// Profilers for profile.sh; localhost only, and the app uses its own mux so /debug/ is not exposed
-	http.DefaultServeMux.Handle("/debug/fgprof", fgprof.Handler())
-	go func() { slog.Info("pprof", "err", http.ListenAndServe("localhost:6060", nil)) }()
+	// Profilers for profile.sh, enabled by ISUCON_PPROF=1 in env.sh; localhost only, and the app uses
+	// its own mux so /debug/ is not exposed
+	if os.Getenv("ISUCON_PPROF") == "1" {
+		http.DefaultServeMux.Handle("/debug/fgprof", fgprof.Handler())
+		go func() { slog.Info("pprof", "err", http.ListenAndServe("localhost:6060", nil)) }()
+	}
 
 	mux := setup()
 	slog.Info("Listening on :8080")
