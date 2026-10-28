@@ -60,8 +60,10 @@ done
 while IFS= read -r unit; do
   # the app itself is restarted below anyway
   [[ -n $unit && $unit != "$APP_SERVICE.service" ]] || continue
+  # leave intentionally stopped services (e.g. other language implementations) stopped
+  systemctl is-active --quiet "$unit" || continue
   echo "==> restarting $unit"
-  sudo systemctl try-restart "$unit"   # leave intentionally stopped services stopped
+  sudo systemctl restart "$unit"
 done < <(printf '%s\n' "${units[@]-}" | sort -u)
 if has_changed /etc/mysql/; then
   echo "==> restarting mysql"
