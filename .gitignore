@@ -1,0 +1,13 @@
+# Unused language implementations (we use Go)
+/nodejs/
+/perl/
+/php/
+/python/
+/ruby/
+/rust/
+# Prebuilt binary of the mock payment server
+/payment_mock/payment_mock
+*.log
+
+# Local analysis results from logs.sh
+/logs/
