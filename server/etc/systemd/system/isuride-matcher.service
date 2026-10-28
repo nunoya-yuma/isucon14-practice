@@ -13,7 +13,7 @@ User=isucon
 Group=isucon
 EnvironmentFile=/home/isucon/env.sh
 
-ExecStart=/bin/sh -c "while true; do curl -s https://isuride.xiv.isucon.net/api/internal/matching; sleep $ISUCON_MATCHING_INTERVAL; done"
+ExecStart=/bin/sh -c "while true; do curl -s http://localhost:8080/api/internal/matching; sleep $ISUCON_MATCHING_INTERVAL; done"
 ExecStop=/bin/kill -s QUIT $MAINPID
 
 Restart=on-failure
